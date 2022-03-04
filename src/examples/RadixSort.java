@@ -1,5 +1,6 @@
-package RadixSort;
+package examples;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -14,35 +15,45 @@ import java.util.LinkedList;
  */
 public class RadixSort {
 	
-	private ArrayList<String> words;		// list of words to sort
+	private ArrayList<String> words;		// list of words to sort, loaded into memory
 	
-	private final String WORD_FILE = "randomWords.txt";
+	public String WORD_FILE = "data/randomWords.txt";
 	
-	private String OUTPUT = "output.txt";
+	public String OUTPUT = "output.txt";
 	
 	private int maxWordLength;				// length of longest string in file
 	
-	public RadixSort() {
+	/**
+	 * Creates a new structure ready to sort the configured file.
+	 * @throws FileNotFoundException if the configured file is not readable
+	 */
+	public RadixSort() throws FileNotFoundException {
 		words = new ArrayList<String>();
 		maxWordLength = findMaxWordLength();
 	}
 	
 	public static void main(String[] args) {
-		RadixSort rs = new RadixSort();
-		rs.run();
+		try {
+			RadixSort rs = new RadixSort();
+			rs.run();
+		} catch (java.io.FileNotFoundException e) {
+			// Only known cause is if the file is not in the right place according to config
+			throw new IllegalStateException(e);
+		}
 	}
 	
-	public void run() {
+	public void run() throws FileNotFoundException {
 		readWords();
 		words = sortWords(words);
 		printWords();
 	}
 	
 	/**
-	 *  Finds longest string in file
+	 *  Finds longest string in our file
 	 *  @return maxLength		length of longest string
+	 *  @throws java.io.FileNotFoundException if the word file cannot be read
 	 */
-	public int findMaxWordLength() {
+	public int findMaxWordLength() throws java.io.FileNotFoundException {
 		java.util.Scanner findMaxLength = FileUtils.openToRead(WORD_FILE);
 		int maxLength = 0;
 		while (findMaxLength.hasNext()) {
@@ -54,8 +65,11 @@ public class RadixSort {
 		return maxLength;
 	}
 	
-	/**	Read in all words from the file */
-	public void readWords() {
+	/**	Read in all words from our file, store them in a class variable.
+	 *  Possible memory / speed improvement:  count while finding max length, then read and sort at the same time
+	 *  @throws java.io.FileNotFoundException if the word file cannot be read
+	 */
+	public void readWords() throws FileNotFoundException {
 		java.util.Scanner input = FileUtils.openToRead(WORD_FILE);
 		int count = 0;
 		while (input.hasNext()) {
@@ -144,8 +158,10 @@ public class RadixSort {
 		}
 	}
 	
-	/**	Print the words */
-	public void printWords() {
+	/**	Print the words 
+	 * @throws FileNotFoundException if the configured output file cannot be written
+	 * */
+	public void printWords() throws FileNotFoundException {
 		java.io.PrintWriter output = FileUtils.openToWrite(OUTPUT);
 		for (int i = 0; i < words.size(); i++)
 			output.println(words.get(i));
