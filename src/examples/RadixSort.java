@@ -29,7 +29,6 @@ public class RadixSort {
 	 */
 	public RadixSort() throws FileNotFoundException {
 		words = new ArrayList<String>();
-		maxWordLength = findMaxWordLength();
 	}
 	
 	public static void main(String[] args) {
@@ -43,6 +42,7 @@ public class RadixSort {
 	}
 	
 	public void run() throws FileNotFoundException {
+		maxWordLength = findMaxWordLength();
 		readWords();
 		words = sortWords(words);
 		printWords();
