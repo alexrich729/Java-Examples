@@ -12,31 +12,62 @@ A clever algorithm that can sort faster than O(n * log(n)).
 
 ### To build the code
 
-How to build the code...
+First build FileUtils. Then,
+
+`javac src/examples/RadixSort.java -s bin --class-path bin`
 
 ### To run the code
 
-Example usage here...
+`java -classpath bin examples.RadixSort`
 
 ### To use as a library
 
-How to use the code as a library....
+```
+import examples.RadixSort;
+
+// CAUTION:  Make sure the RadixSort.WORD_FILE matches the location of the data file you are trying to sort, and that
+//  RadixSort.OUTPUT matches the location where you want the sorted data written.
+
+try {
+	RadixSort rs = new RadixSort();
+	rs.run();
+} catch (java.io.FileNotFoundException e) {
+	// Only known cause is if the file is not in the right place according to config described in the CAUTION above.
+	throw new IllegalStateException(e);
+}
+
+
+```
 
 ## FileUtils
 
-Convenience functions for read/writing files.
+Convenience functions for read/writing files that just improve the error messages thrown if a file cannot be opened for read
+or write.
 
 ### To build the code
 
-How to build the code...
+`javac src/examples/FileUtils.java -s bin`
 
 ## To use as a library
 
-How to use the code as a library....
+```
+import examples.FileUtils;
+
+String INPUT_FILE_NAME = "SOME_INPUT_FILE_PATH";
+String OUTPUT_FILE_NAME = "SOME_OUTPUT_FILE_PATH";
+
+try {
+  java.util.Scanner some_file_scanner = FileUtils.openToRead(INPUT_FILE_NAME);
+  java.io.PrintWriter output = FileUtils.openToWrite(OUTPUT_FILE_NAME);
+} catch (java.io.FileNotFoundException e) {
+  throw new IllegalStateException(e); // Error message will show the filename that wasn't found
+}
+
+```
 
 ## Author
 
-Alex Richardson <
+Alex Richardson
 
 ## License
 
