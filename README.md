@@ -46,6 +46,7 @@ or write.
 
 ### To build the code
 
+`mkdir bin`
 `javac src/examples/FileUtils.java -s bin`
 
 ## To use as a library
